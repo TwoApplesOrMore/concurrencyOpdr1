@@ -27,4 +27,8 @@ public class InsertionsortThread implements Runnable {
             }
         }
     }
+
+    public ArrayList<Integer> getList() {
+        return list;
+    }
 }

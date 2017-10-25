@@ -20,11 +20,24 @@ public class Main {
         startup();
 
         // run the test for single threaded
-        testSingleThread();
+//        testSingleThread();
 
         //run the test for two-threaded
-        testTwoThreaded();
-        
+//        testTwoThreaded();
+
+        //run the tests for various cutOffs
+        testCutOff(4000);
+        testCutOff(2000);
+        testCutOff(1000);
+        testCutOff(500);
+        testCutOff(250);
+        testCutOff(150);
+        testCutOff(100);
+        testCutOff(50);
+        testCutOff(35);
+        testCutOff(20);
+        testCutOff(10);
+        testCutOff(5);
     }
 
     /**
@@ -58,10 +71,21 @@ public class Main {
     private void testTwoThreaded(){
         sortTwoThreaded(twentyfiveK);
         sortTwoThreaded(fiftyK);
-        sortTwoThreaded(onehundredK);
-        sortTwoThreaded(twohundredK);
-        sortTwoThreaded(fourhundredK);
-        sortTwoThreaded(eighthundredK);
+//        sortTwoThreaded(onehundredK);
+//        sortTwoThreaded(twohundredK);
+//        sortTwoThreaded(fourhundredK);
+//        sortTwoThreaded(eighthundredK);
+    }
+    /**
+     * Helper function to run all tests with certain cutOffs
+     */
+    private void testCutOff(int cutOff){
+        sortWithCutOff(twentyfiveK, cutOff);
+        sortWithCutOff(fiftyK, cutOff);
+        sortWithCutOff(onehundredK, cutOff);
+        sortWithCutOff(twohundredK, cutOff);
+        sortWithCutOff(fourhundredK, cutOff);
+        sortWithCutOff(eighthundredK, cutOff);
     }
 
     /**
@@ -174,6 +198,7 @@ public class Main {
 
             // combine result of threads
             ArrayList<Integer> mergedList = utils.mergeArrays(sublist1, sublist2);
+            System.out.println(Arrays.toString(mergedList.toArray()));
 
             // end timer
             duration = ((System.nanoTime() - startTime) / 1000000);
@@ -198,4 +223,52 @@ public class Main {
         //Store the result in a text-file for easy readability
         utils.storeResult("Sorted list: " + list.size() + " with two threads. Average was: " + average);
     }
+
+    private void sortWithCutOff(ArrayList<Integer> list, int cutOff){
+        long startTime;
+        long duration;
+        long total = 0, longest = Integer.MIN_VALUE, shortest = Integer.MAX_VALUE;
+
+        for(int i = 0; i < 10; i++) {
+            // make sure the list is filled and randomized before sorting
+            utils.resetList(list);
+
+            startTime = System.nanoTime();
+
+            CutOffSort cutOffSort = new CutOffSort(list, cutOff);
+            Thread thread = new Thread(cutOffSort);
+
+            thread.start();
+
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            // end timer
+            duration = ((System.nanoTime() - startTime) / 1000000);
+
+            // print to check the duration: This way we can see if it still runs
+            System.out.println("Duration on sort : " + duration + " ms ");
+            // Keep track of the extremeties as we will not use these in our averages
+            if (duration > longest) {
+                longest = duration;
+            } else if (duration < shortest) {
+                shortest = duration;
+            }
+            // add the duration to the total
+            total += duration;
+        }
+        long average = (total - (longest+shortest)) / 8;
+
+        // A log to check if everything works correct
+        System.out.println("cutoff: "+cutOff+"Longest: " + longest + " shortest: " + shortest + " total: " + total + " average: " + average);
+
+        //Store the result in a text-file for easy readability
+        utils.storeResult("Sorted list: " + list.size() + " with cutoff: "+ cutOff+". Average was: " + average);
+
+    }
+
+
 }
