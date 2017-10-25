@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
@@ -6,8 +7,8 @@ public class Main {
     }
 
     private ArrayList<Integer> twentyfiveK = new ArrayList<>();
-    private ArrayList<Integer> fiftyK = new ArrayList<>();
-    private ArrayList<Integer> onehundredK = new ArrayList<>();
+    private ArrayList<Integer> fiftyK = new ArrayList<>(50000);
+    private ArrayList<Integer> onehundredK = new ArrayList<>(100000);
     private ArrayList<Integer> twohundredK = new ArrayList<>();
     private ArrayList<Integer> fourhundredK = new ArrayList<>();
     private ArrayList<Integer> eighthundredK = new ArrayList<>();
@@ -15,23 +16,59 @@ public class Main {
     private Utils utils = new Utils();
 
     public void run() {
-        for(int i = 0; i < 10000; i++ ) {
-            twentyfiveK.add(utils.randomInt());
-        }
 
-        for(int i = 0; i < 50000; i++) {
-            fiftyK.add(utils.randomInt());
-        }
+        startup();
 
-        testSingleThread(twentyfiveK);
+        // run the test for single threaded
+        testSingleThread();
+
+        //run the test for two-threaded
+        testTwoThreaded();
+        
+    }
+
+    /**
+     * startup method to get things up and rolling
+     */
+    private void startup() {
+        utils.fillList(twentyfiveK, 25000);
+        utils.fillList(fiftyK, 50000);
+        utils.fillList(onehundredK, 100000);
+        utils.fillList(twohundredK, 200000);
+        utils.fillList(fourhundredK, 400000);
+        utils.fillList(eighthundredK, 800000);
+
+    }
+
+    /**
+     * Helper function to do the single-threaded test for all list-sizes
+     */
+    private void testSingleThread() {
+        sortSingleThread(twentyfiveK);
+        sortSingleThread(fiftyK);
+        sortSingleThread(onehundredK);
+        sortSingleThread(twohundredK);
+        sortSingleThread(fourhundredK);
+        sortSingleThread(eighthundredK);
+    }
+
+    /**
+     * Helper function to run all two-threaded tests
+     */
+    private void testTwoThreaded(){
         sortTwoThreaded(twentyfiveK);
+        sortTwoThreaded(fiftyK);
+        sortTwoThreaded(onehundredK);
+        sortTwoThreaded(twohundredK);
+        sortTwoThreaded(fourhundredK);
+        sortTwoThreaded(eighthundredK);
     }
 
     /**
      * Method to execute the sort 10 times with a single thread, and store the average
      * @param list
      */
-    private void testSingleThread(ArrayList<Integer> list) {
+    private void sortSingleThread(ArrayList<Integer> list) {
         // initialize all variables needed for the test
         long startTime;
         long duration;
@@ -39,11 +76,9 @@ public class Main {
 
         for(int i = 0; i < 10; i++) {
 
-            // we initialize the list with random numbers
-            // make sure the list is randomized again before sorting again
-            if(i > 0) {
-                utils.resetList(list);
-            }
+            // make sure the list is filled and randomized before sorting
+            utils.resetList(list);
+
 
             // TODO: If you want to see what list is going to be sorted, uncomment this next line
             //System.out.println(Arrays.toString(list.toArray()));
@@ -105,9 +140,10 @@ public class Main {
             ArrayList<Integer> sublist1 = new ArrayList<>();
             ArrayList<Integer> sublist2 = new ArrayList<>();
 
-            if(i > 0) {
-                utils.resetList(list);
-            }
+            // make sure the list is filled and randomized before sorting
+            utils.resetList(list);
+
+
             // split our list in two
             for (int j = 0; j < list.size() /2; j++) {
                 sublist1.add(list.get(j));
@@ -152,11 +188,8 @@ public class Main {
             }
             // add the duration to the total
             total += duration;
-
-            System.out.println("Sublist1: " + sublist1);
-            System.out.println("Sublist2: " + sublist2);
-            System.out.println("combined: " + mergedList);
         }
+
         long average = (total - (longest+shortest)) / 8;
 
         // A log to check if everything works correct
