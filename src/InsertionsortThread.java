@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class InsertionsortThread implements Runnable {
     private ArrayList<Integer> list;
@@ -9,16 +8,14 @@ public class InsertionsortThread implements Runnable {
     }
 
     public void run() {
-        System.out.println("Thread has been started");
-        System.out.println("Received list is: " + Arrays.toString(list.toArray()));
+        insertionsort();
     }
 
 
     /**
      * The method to do the insertionsort
-     * @param list the list that has to be sorted
      */
-    public void insertionsort(ArrayList<Integer> list) {
+    public void insertionsort() {
         int temp;
         for (int i = 1; i < list.size(); i++) {
             for(int j = i ; j > 0 ; j--){

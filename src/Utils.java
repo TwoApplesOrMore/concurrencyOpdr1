@@ -13,6 +13,38 @@ public class Utils {
 
 
     /**
+     * Utilfunction to merge two sorted arrays( note: this does not work if they are not sorted)
+     * @param list1 the first list
+     * @param list2 the second list to merge with the first
+     * @return the full merged list
+     */
+    public ArrayList<Integer> mergeArrays(ArrayList<Integer> list1, ArrayList<Integer> list2) {
+
+        ArrayList<Integer> combinedlist = new ArrayList<>();
+
+        int i = 0, x = 0;
+
+        while (i < list1.size() && x < list2.size()) {
+            if (list1.get(i) < list2.get(x)) {
+                combinedlist.add(list1.get(i));
+                i++;
+            } else {
+                combinedlist.add(list2.get(x));
+                x++;
+            }
+        }
+        while (i < list1.size()) {
+            combinedlist.add(list1.get(i));
+        }
+        while (x < list2.size()) {
+            combinedlist.add(list2.get(x));
+        }
+
+        return combinedlist;
+    }
+
+
+    /**
      * Simple method to return a number between 0 and the max value of an Integer
      * @return the randomly generated number.
      */

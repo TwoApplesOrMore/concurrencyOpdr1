@@ -20,7 +20,7 @@ public class Main {
     private Utils utils = new Utils();
 
     public void run() {
-        for(int i = 0; i < 10; i++ ) {
+        for(int i = 0; i < 1000; i++ ) {
             twentyfiveK.add(utils.randomInt());
         }
 
@@ -49,8 +49,9 @@ public class Main {
             if(i > 0) {
                 utils.resetList(list);
             }
-            System.out.println(Arrays.toString(list.toArray()));
 
+            // TODO: If you want to see what list is going to be sorted, uncomment this next line
+            //System.out.println(Arrays.toString(list.toArray()));
             // run the test now
 
             //build our single thread
@@ -88,6 +89,9 @@ public class Main {
         }
         long average = (total - (longest+shortest)) / 8;
 
+        // A log to check if everything works correct
+        System.out.println("Longest: " + longest + " shortest: " + shortest + " total: " + total + " average: " + average);
+
         //Store the result in a text-file for easy readability
         utils.storeResult("Sorted list: " + list.size() + " with a single thread. Average was: " + average);
     }
@@ -116,9 +120,12 @@ public class Main {
             }
 
             //TODO: Implement threads
-            // set starttime
-
-            //start up the threads
+            // set up threads, and then set starttime
+            InsertionsortThread sort1 = new InsertionsortThread(sublist1);
+            InsertionsortThread sort2 = new InsertionsortThread(sublist2);
+            Thread firstThread = new Thread(sort1);
+            Thread secondThread = new Thread(sort2);
+            //start threads
 
             // wait for result
 
