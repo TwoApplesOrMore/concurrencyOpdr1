@@ -1,0 +1,1 @@
+Sorted list: 100 with a single thread. Average was: 0
