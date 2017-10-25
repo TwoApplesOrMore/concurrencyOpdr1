@@ -1,1 +1,3 @@
 Sorted list: 100 with a single thread. Average was: 0
+Sorted list: 10 with a single thread. Average was: 0
+Sorted list: 10 with a single thread. Average was: 0

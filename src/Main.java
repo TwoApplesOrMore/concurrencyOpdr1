@@ -20,7 +20,7 @@ public class Main {
     private Utils utils = new Utils();
 
     public void run() {
-        for(int i = 0; i < 100; i++ ) {
+        for(int i = 0; i < 10; i++ ) {
             twentyfiveK.add(utils.randomInt());
         }
 
@@ -28,7 +28,7 @@ public class Main {
             fiftyK.add(utils.randomInt());
         }
 
-        sortTwoThreaded(twentyfiveK);
+        testSingleThread(twentyfiveK);
         //testSingleThread(fiftyK);
     }
 
@@ -53,10 +53,25 @@ public class Main {
 
             // run the test now
 
+            //build our single thread
+            InsertionsortThread insertionsort = new InsertionsortThread(list);
+            Thread singlethread = new Thread(insertionsort);
+
             // get the starting time
             startTime = System.nanoTime();
-            //sort the list
-            utils.insertionsort(list);
+
+            //start sorting
+            singlethread.start();
+
+            // wait for it to finish
+            try {
+                singlethread.join();
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                System.out.println("The single thread has been interrupted");
+                return;
+            }
+
             //get the duration
             duration = ((System.nanoTime() - startTime) / 1000000);
 
@@ -72,9 +87,6 @@ public class Main {
             total += duration;
         }
         long average = (total - (longest+shortest)) / 8;
-
-        // A log to check if everything works correct
-        //System.out.println("Longest: " + longest + " shortest: " + shortest + " total: " + total + " average: " + average);
 
         //Store the result in a text-file for easy readability
         utils.storeResult("Sorted list: " + list.size() + " with a single thread. Average was: " + average);
@@ -104,8 +116,22 @@ public class Main {
             }
 
             //TODO: Implement threads
+            // set starttime
+
+            //start up the threads
+
+            // wait for result
+
+            // combine result of threads
+            // merge result
+
+            // end timer
+
+            // wrap up if needed
 
         }
+
+
         long average = (total - (longest+shortest)) / 8;
 
         // A log to check if everything works correct
