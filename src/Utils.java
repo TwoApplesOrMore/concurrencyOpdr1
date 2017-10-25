@@ -47,6 +47,17 @@ public class Utils {
 
 
     /**
+     * A function called at startup of the program to fill our lists
+     * @param list The list to be filled
+     * @param size the size of our list
+     */
+    public void fillList(ArrayList<Integer> list, int size) {
+        for (int i = 0; i < size; i++) {
+            list.add(randomInt());
+        }
+    }
+
+    /**
      * Simple method to return a number between 0 and the max value of an Integer
      * @return the randomly generated number.
      */
@@ -54,6 +65,7 @@ public class Utils {
         Random RNG = new Random();
         return RNG.nextInt(Integer.MAX_VALUE);
     }
+
 
     /**
      * reset our sorted list to randomize it again
@@ -95,6 +107,5 @@ public class Utils {
                 }
             }
         }
-
     }
 }

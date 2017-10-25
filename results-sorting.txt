@@ -1,2 +1,0 @@
-Sorted list: 10000 with a single thread. Average was: 204
-Sorted list: 10000 with two threads. Average was: 60
