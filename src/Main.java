@@ -1,9 +1,4 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,7 +15,7 @@ public class Main {
     private Utils utils = new Utils();
 
     public void run() {
-        for(int i = 0; i < 1000; i++ ) {
+        for(int i = 0; i < 10000; i++ ) {
             twentyfiveK.add(utils.randomInt());
         }
 
@@ -29,7 +24,7 @@ public class Main {
         }
 
         testSingleThread(twentyfiveK);
-        //testSingleThread(fiftyK);
+        sortTwoThreaded(twentyfiveK);
     }
 
     /**
@@ -119,33 +114,55 @@ public class Main {
                 sublist2.add(list.get(list.size()-(j+1)));
             }
 
-            //TODO: Implement threads
             // set up threads, and then set starttime
             InsertionsortThread sort1 = new InsertionsortThread(sublist1);
             InsertionsortThread sort2 = new InsertionsortThread(sublist2);
             Thread firstThread = new Thread(sort1);
             Thread secondThread = new Thread(sort2);
+
+            startTime = System.nanoTime();
+
             //start threads
+            firstThread.start();
+            secondThread.start();
 
             // wait for result
+            try {
+                firstThread.join();
+                secondThread.join();
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                System.out.println("The single thread has been interrupted");
+                return;
+            }
 
             // combine result of threads
-            // merge result
+            ArrayList<Integer> mergedList = utils.mergeArrays(sublist1, sublist2);
 
             // end timer
+            duration = ((System.nanoTime() - startTime) / 1000000);
 
-            // wrap up if needed
+            // print to check the duration: This way we can see if it still runs
+            System.out.println("Duration on sort : " + duration + " ms ");
+            // Keep track of the extremeties as we will not use these in our averages
+            if (duration > longest) {
+                longest = duration;
+            } else if (duration < shortest) {
+                shortest = duration;
+            }
+            // add the duration to the total
+            total += duration;
 
+            System.out.println("Sublist1: " + sublist1);
+            System.out.println("Sublist2: " + sublist2);
+            System.out.println("combined: " + mergedList);
         }
-
-
         long average = (total - (longest+shortest)) / 8;
 
         // A log to check if everything works correct
-        //System.out.println("Longest: " + longest + " shortest: " + shortest + " total: " + total + " average: " + average);
+        System.out.println("Longest: " + longest + " shortest: " + shortest + " total: " + total + " average: " + average);
 
         //Store the result in a text-file for easy readability
-        utils.storeResult("Sorted list: " + list.size() + " with a single thread. Average was: " + average);
-
+        utils.storeResult("Sorted list: " + list.size() + " with two threads. Average was: " + average);
     }
 }

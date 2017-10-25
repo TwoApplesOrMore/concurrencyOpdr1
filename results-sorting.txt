@@ -1,6 +1,2 @@
-Sorted list: 100 with a single thread. Average was: 0
-Sorted list: 10 with a single thread. Average was: 0
-Sorted list: 10 with a single thread. Average was: 0
-Sorted list: 10 with a single thread. Average was: 0
-Sorted list: 1000 with a single thread. Average was: 5
-Sorted list: 1000 with a single thread. Average was: 4
+Sorted list: 10000 with a single thread. Average was: 204
+Sorted list: 10000 with two threads. Average was: 60

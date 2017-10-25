@@ -35,9 +35,11 @@ public class Utils {
         }
         while (i < list1.size()) {
             combinedlist.add(list1.get(i));
+            i++;
         }
         while (x < list2.size()) {
             combinedlist.add(list2.get(x));
+            x++;
         }
 
         return combinedlist;
@@ -50,7 +52,7 @@ public class Utils {
      */
     public int randomInt() {
         Random RNG = new Random();
-        return RNG.nextInt(100);
+        return RNG.nextInt(Integer.MAX_VALUE);
     }
 
     /**
